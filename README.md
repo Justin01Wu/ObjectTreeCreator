@@ -8,9 +8,12 @@ Because Java has so many types of class, this code only covers most common Java 
 1. all primitive types and its wrapper
 2. List, Set and Map
 3. Array
-4. and so on
+4. String
+5. and so on
 
-The missed class will be set to null, and you can customize it
+The missed class will be set to null, and you can customize it if you want to avoid null
+
+You can see those sample below
 
 ## How to use it
 
@@ -71,14 +74,7 @@ if any exceptions occur during those process, the value will be set to null
 It can detect nested class:
 ```
 public class NestedBean {
-	private String name;
 	private NestedBean parent;
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public NestedBean getParent() {
 		return parent;
 	}
