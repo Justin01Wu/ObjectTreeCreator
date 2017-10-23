@@ -5,10 +5,10 @@ This util automatically create an object tree with defaul values if they are Jav
 
 ## How does it do?
 Because Java has so many types of class, this code only covers most common Java class, like 
-    all primitive types and its wrapper
-    List, Set and Map
-    Array
-    and so on
+1. all primitive types and its wrapper
+2. List, Set and Map
+3. Array
+4. and so on
 User can customized it by adding their own creator:
 ```
 public class CustomizedBeanCreator implements BeanCreator<CustomizedBean>{
