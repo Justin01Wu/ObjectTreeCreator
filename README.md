@@ -1,7 +1,7 @@
 # ObjectTreeCreator
 
 ## What is it?
-This util automatically walk through the class tree(Java reflection) and create an object tree with defaul values
+This util automatically walk through the class tree on Java reflection and create an object tree with defaul values
 
 ## How does it do?
 Because Java has so many types of class, this code only covers most common Java class, like 
