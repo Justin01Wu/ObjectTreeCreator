@@ -3,12 +3,14 @@
 ## What is it?
 This util automatically walk through the class tree on Java reflection and create an object tree with defaul values
 
-## How does it do?
+## What does it do?
 Because Java has so many types of class, this code only covers most common Java class, like 
 1. all primitive types and its wrapper
 2. List, Set and Map
 3. Array
 4. and so on
+
+The missed class will be set to null, and you can customize it
 
 ## How to use it
 
@@ -21,9 +23,9 @@ Because Java has so many types of class, this code only covers most common Java 
 	}
 ```
 
-## Customize it
+## Customizing it
 
-User can customized it by adding their own creator:
+User can customize it by adding their own creator:
 ```
 public class CustomizedBeanCreator implements BeanCreator<CustomizedBean>{
 	
@@ -44,7 +46,7 @@ public class CustomizedBeanCreator implements BeanCreator<CustomizedBean>{
 }
 ```
 
-You can also customized existing creator, like primitive type
+You can also customize an existing creator, like primitive type
 ```
 public class CustomizedStringCreator implements BeanCreator <String>{
 	
@@ -62,9 +64,9 @@ public class CustomizedStringCreator implements BeanCreator <String>{
 ```
 
 ## Error handling
-If a class is not covered,  and it is not customized,  and it doesn't have default constructor, then the util will set it to null 
+If a class is not covered, it is not customized, and it doesn't have default constructor, then the util will set it to null 
 
-if any exception happen during those process, the value will be set to null
+if any exceptions occur during those process, the value will be set to null
 
 ## Why do I create this util?
 Why Do I create this util:
@@ -73,9 +75,13 @@ We had many RESTful Api On Jackson, I create a java doclet on it, But I had a di
 I did some research on the marketing, and didn't find a good solution for it.
 
 
-Please see some discuss about it:  [RESTful sample](https://stackoverflow.com/questions/40985838/automatically-generate-restful-api-sample-json).
+Please see some discussions about it:  [RESTful sample](https://stackoverflow.com/questions/40985838/automatically-generate-restful-api-sample-json).
 
 So I decided to create this tool to automatically create a java object tree based on its class.
+
+## Dependency
+
+This Jar won't depend on any Third party library except JDK 7 and above.
 
 ## Author
 Justin Wu 
