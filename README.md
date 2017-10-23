@@ -1,7 +1,7 @@
 # ObjectTreeCreator
 
 ## What is it?
-This util automatically create an object tree with defaul values if they are Java Bean
+This util automatically walk through the class tree(Java reflection) and create an object tree with defaul values
 
 ## How does it do?
 Because Java has so many types of class, this code only covers most common Java class, like 
@@ -9,6 +9,20 @@ Because Java has so many types of class, this code only covers most common Java 
 2. List, Set and Map
 3. Array
 4. and so on
+
+## How to use it
+
+```
+	@Test
+	public void testIntegerCreator() throws Exception {
+		BeanGenerator generator = new BeanGenerator();		
+		Integer result = generator.generate(Integer.class);
+		assertEquals(result, new Integer(12345));
+	}
+```
+
+## Customize it
+
 User can customized it by adding their own creator:
 ```
 public class CustomizedBeanCreator implements BeanCreator<CustomizedBean>{
@@ -30,6 +44,22 @@ public class CustomizedBeanCreator implements BeanCreator<CustomizedBean>{
 }
 ```
 
+You can also customized existing creator, like primitive type
+```
+public class CustomizedStringCreator implements BeanCreator <String>{
+	
+	@Override
+	public String createBean() {
+		String bean = new String("===this is customized String===");
+		return bean;
+	}
+
+	@Override
+	public Class<String> getClazz() {
+		return String.class;
+	}
+}
+```
 
 ## Error handling
 If a class is not covered,  and it is not customized,  and it doesn't have default constructor, then the util will set it to null 
