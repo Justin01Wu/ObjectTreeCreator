@@ -68,6 +68,27 @@ If a class is not covered, it is not customized, and it doesn't have default con
 
 if any exceptions occur during those process, the value will be set to null
 
+It can detect nested class:
+```
+public class NestedBean {
+	private String name;
+	private NestedBean parent;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public NestedBean getParent() {
+		return parent;
+	}
+	public void setParent(NestedBean parent) {
+		this.parent = parent;
+	}
+}
+```
+Here **parent** will be set to null to avoid infinite loop.
+
 ## Why do I create this util?
 Why Do I create this util:
 
