@@ -5,11 +5,12 @@ This util automatically walk through the class tree on Java reflection and creat
 
 ## What does it do?
 Because Java has so many types of class, this code only covers most common Java class, like 
-1. all primitive types and its wrapper
-2. List, Set and Map
-3. Array
-4. String
-5. and so on
+1. all primitive types and its wrapper (Integer default value will be 12345, and so on)
+2. List, Set and Map (will create one element)
+3. Array (will create one element)
+4. String (default value is "a string")
+5. enum (will use first item)
+6. and so on
 
 The missed class will be set to null, and you can customize it if you want to avoid null
 
