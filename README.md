@@ -89,7 +89,9 @@ Here **parent** will be set to null to avoid infinite loop.
 ## Why do I create this util?
 Why Do I create this util:
 
-We had many RESTful Api On Jackson, I create a java doclet on it, But I had a difficulty to prepare sample for it
+We had many RESTful API On Jackson, I created a java doclet on it to get RESTful API docs.
+But I had a difficulty to prepare sample for it.
+
 I did some research on the marketing, and didn't find a good solution for it.
 
 
