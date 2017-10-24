@@ -66,6 +66,7 @@ public class BeanGenerator {
 		T container;
 		if(reigsteredClass.keySet().contains(clazz)){
 			container = handleBasicClass(clazz, null);
+			classStack.pop();
 			return container;
 		}
 
@@ -73,6 +74,7 @@ public class BeanGenerator {
 			container = clazz.newInstance();
 		}catch(Exception e){
 			e.printStackTrace();
+			classStack.pop();
 			return null;
 		}
 		

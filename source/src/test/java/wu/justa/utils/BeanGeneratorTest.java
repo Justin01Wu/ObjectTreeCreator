@@ -19,6 +19,14 @@ import wu.justa.utils.test.CustomizedBeanCreator;
 import wu.justa.utils.test.CustomizedStringCreator;
 
 public class BeanGeneratorTest {
+	
+	@Test
+	public void testIntegerCreator() throws Exception {
+		BeanGenerator generator = new BeanGenerator();		
+		Integer result = generator.generate(Integer.class);
+		assertEquals(result, new Integer(12345));
+	}
+
 
 	@Test
 	public void testCustomizedCreator() throws Exception {
