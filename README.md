@@ -12,9 +12,11 @@ Because Java has so many types of class, this code only covers most common Java 
 5. enum (will use first item)
 6. and so on
 
-The missed class will be set to null, and you can customize it if you want to avoid null
+The process will walk throught the class tree: call default constructor and run all setter on it.
 
-You can see those sample below
+If an exception happen, the related properties will be set to null, you can customize it to avoid those exceptions.
+
+You can see those sample below.
 
 ## How to use it
 
@@ -85,7 +87,9 @@ public class CustomizedStringCreator implements BeanCreator <String>{
 ## Error handling
 If a class is not covered, it is not customized, and it doesn't have default constructor, then the util will set it to null 
 
-if any exceptions occur during those process, the value will be set to null
+
+If any exceptions occur during those process, the value will be set to null
+
 
 It can detect nested class:
 ```
