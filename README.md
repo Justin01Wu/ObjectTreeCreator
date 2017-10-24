@@ -49,6 +49,21 @@ public class CustomizedBeanCreator implements BeanCreator<CustomizedBean>{
 
 }
 ```
+Now you can register it :
+
+```
+	@Test
+	public void testCustomizedCreator() throws Exception {
+		BeanGenerator generator = new BeanGenerator();
+		generator.addExternalCreator(new CustomizedBeanCreator());
+		CustomizedBean result = generator.generate(CustomizedBean.class);
+		System.out.println(result);
+		assertEquals(result.getId(), new Integer(-2323));
+		assertEquals(result.getName(), "this bean is created by a customized creator");
+
+	}
+```
+
 
 You can also customize an existing creator, like primitive type
 ```
