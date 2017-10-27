@@ -23,7 +23,14 @@ public class BeanGenerator {
 	
 	private Stack<Class<?>> classStack = new Stack<>();
 	
+	private boolean verbose = false;
+	
 	public BeanGenerator(){
+		this(false);
+	}
+	
+	public BeanGenerator(boolean verbose){
+		this.verbose = verbose;
 		
 		reigsteredClass.put(java.util.List.class, null);
 		reigsteredClass.put(java.util.Set.class, null);
@@ -72,7 +79,10 @@ public class BeanGenerator {
 		try{
 			container = clazz.newInstance();
 		}catch(Exception e){
-			e.printStackTrace();
+			System.out.println(e.getMessage() + " on class" + clazz.getName());
+			if(verbose){
+				e.printStackTrace();	
+			}			
 			classStack.pop();
 			return null;
 		}
@@ -119,7 +129,11 @@ public class BeanGenerator {
 		try{
 			method.invoke(container, argOne);
 		}catch( Exception e){
-			e.printStackTrace();
+			System.out.println(e.getMessage() + " on method" + method.getName());
+			if(verbose){
+				e.printStackTrace();	
+			}			
+
 		}
 		
 	}
