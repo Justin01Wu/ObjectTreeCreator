@@ -51,12 +51,11 @@ public class BeanGenerator {
 	
 	public void addExternalCreator(BeanCreator<?> creator){
 		reigsteredClass.put(creator.getClazz(), creator);
-	}
+	}	
 	
-	
-	
-	public <T> T generate(Class<T> clazz) throws Exception {
+	public <T> T generate(Class<T> clazz, Type type) throws Exception {
 		
+		Type[] types =  {type};
 		if(classStack.contains(clazz)){
 			// stop nested bean infinite loop 
 			return null;
@@ -65,7 +64,7 @@ public class BeanGenerator {
 		
 		T container;
 		if(reigsteredClass.keySet().contains(clazz)){
-			container = handleBasicClass(clazz, null);
+			container = handleBasicClass(clazz, types);
 			classStack.pop();
 			return container;
 		}
@@ -100,6 +99,11 @@ public class BeanGenerator {
     	}
     	classStack.pop();  // remove myself to other class can handle the same class 
 		return container;
+		
+	}
+	
+	public <T> T generate(Class<T> clazz ) throws Exception {
+		return generate(clazz, null);
 	}
 	
 	private void  handleOneMethod(Method method, Object container) throws Exception{

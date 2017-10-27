@@ -5,6 +5,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.Set;
+
 import org.junit.Test;
 
 import wu.justa.utils.bean.BeanExtended;
@@ -141,5 +145,28 @@ public class BeanGeneratorTest {
 		assertTrue(result.getMyBoolean());
 
 	}
+	
+	@Test
+	public void testSetInteger() throws Exception {
+		
+    	Method[] allMethods = ManyDataType.class.getDeclaredMethods();
+    	for (Method method : allMethods) {
+    	    if (method.getName().equals("getIntegerSet")) {
+    	    	Class<?> clazz = method.getReturnType();
+    	    	Type type = method.getGenericReturnType();
+    	    	
+    			BeanGenerator generator = new BeanGenerator();
+    			@SuppressWarnings("unchecked")
+				Set<Integer> result = (Set<Integer>)generator.generate(clazz, type);
+    			System.out.println(result);
+    			assertEquals(result.iterator().next(), new Integer(12345));
+    	        
+    	    }
+    	}
+
+		
+
+	}
+
 
 }
