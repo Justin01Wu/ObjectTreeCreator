@@ -75,11 +75,14 @@ public class BeanGenerator {
 			classStack.pop();
 			return container;
 		}
-
+		if(verbose){
+			System.out.println(" create object on class " + clazz.getName());	
+		}
+		
 		try{
 			container = clazz.newInstance();
 		}catch(Exception e){
-			System.out.println(e.getMessage() + " on class" + clazz.getName());
+			System.err.println(e.getMessage() + " on class " + clazz.getName());
 			if(verbose){
 				e.printStackTrace();	
 			}			
@@ -129,7 +132,7 @@ public class BeanGenerator {
 		try{
 			method.invoke(container, argOne);
 		}catch( Exception e){
-			System.out.println(e.getMessage() + " on method" + method.getName());
+			System.err.println(e.getMessage() + " on method " + method.getName());
 			if(verbose){
 				e.printStackTrace();	
 			}			
@@ -226,7 +229,7 @@ public class BeanGenerator {
 		if(clazz.getName().equals("java.util.List")){
 			
 			ParameterizedType pType = (ParameterizedType) types[0];
-			Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];
+			Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];  // get first generic type
 			//System.out.println(pClazz); //prints out java.lang.Integer
 			Object one = generate(pClazz);
 			
@@ -238,7 +241,7 @@ public class BeanGenerator {
 		
 		if(clazz.getName().equals("java.util.Set")){
 			ParameterizedType pType = (ParameterizedType) types[0];
-			Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];
+			Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];  // get first generic type
 			//System.out.println(pClazz); //prints out java.lang.Integer
 			Object one = generate(pClazz);
 			
@@ -253,11 +256,11 @@ public class BeanGenerator {
 			
 			ParameterizedType pType = (ParameterizedType) types[0];
 			
-			Class<?> keyClazz = (Class<?>) pType.getActualTypeArguments()[0];
+			Class<?> keyClazz = (Class<?>) pType.getActualTypeArguments()[0];   // get first generic type
 			//System.out.println(keyClazz); //prints out java.lang.Integer
 			Object key = generate(keyClazz);
 			
-			Class<?> valueClazz = (Class<?>) pType.getActualTypeArguments()[1];
+			Class<?> valueClazz = (Class<?>) pType.getActualTypeArguments()[1];  // get second generic type
 			//System.out.println(valueClazz); //prints out java.lang.Integer
 			Object value = generate(valueClazz);
 			
