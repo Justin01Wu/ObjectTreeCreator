@@ -169,4 +169,29 @@ public class BeanGeneratorTest {
 	}
 
 
+	@Test
+	public void testStringArray() throws Exception {
+		
+		Class<?> stringArrayClass = String[].class;
+		
+		assertEquals(stringArrayClass.getName(), "[Ljava.lang.String;");
+		
+    	Method[] allMethods = BeanWithArray.class.getDeclaredMethods();
+    	for (Method method : allMethods) {
+    	    if (method.getName().equals("getStringArray")) {
+    	    	Class<?> clazz = method.getReturnType();
+    	    	Type type = method.getGenericReturnType();
+    	    	
+    			BeanGenerator generator = new BeanGenerator();
+				String[] result = (String[])generator.generate(clazz, type);
+    			System.out.println(result);
+    			assertEquals(result[0], "a string");
+    	        
+    	    }
+    	}
+
+		
+
+	}
+
 }

@@ -54,6 +54,12 @@ public class BeanGenerator {
 		reigsteredClass.put(java.sql.Date.class, null);
 		reigsteredClass.put(java.util.Date.class, null);
 		reigsteredClass.put(java.util.Calendar.class, null);
+		
+		// add common array class
+		Class<?> arrayClass = String[].class;
+		reigsteredClass.put(arrayClass, null);
+		arrayClass = Integer[].class;
+		reigsteredClass.put(arrayClass, null);
 	}
 	
 	public void addExternalCreator(BeanCreator<?> creator){
@@ -304,6 +310,11 @@ public class BeanGenerator {
 		return generate(clazz);
 
 
+	}
+	
+	@SuppressWarnings("unchecked")
+	static <T> Class<? extends T[]> getArrayClass(Class<T> clazz) {
+	    return (Class<? extends T[]>) Array.newInstance(clazz, 0).getClass();
 	}
 	
 }
