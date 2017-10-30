@@ -16,7 +16,7 @@ The process will walk throught the class tree: call default constructor and run 
 
 If an exception happen, the related properties will be set to null, you can customize it to avoid those exceptions.
 
-You can see those sample below.
+You can see some samples below.
 
 ## How to use it
 
@@ -39,8 +39,7 @@ public class CustomizedBeanCreator implements BeanCreator<CustomizedBean>{
 	public CustomizedBean createBean() {
 		CustomizedBean bean = new CustomizedBean();
 		bean.setId(-2323);
-		bean.setName("this bean is created by a customized creator");
-		
+		bean.setName("this bean is created by a customized creator");		
 		return bean;
 	}
 	
@@ -48,7 +47,6 @@ public class CustomizedBeanCreator implements BeanCreator<CustomizedBean>{
 	public Class<CustomizedBean> getClazz() {
 		return CustomizedBean.class;
 	}
-
 }
 ```
 Now you can register it :
@@ -85,11 +83,14 @@ public class CustomizedStringCreator implements BeanCreator <String>{
 ```
 
 ## Error handling
-If a class is not covered, it is not customized, and it doesn't have default constructor, then the util will set it to null 
-
+If a class in all of those situations:
+  1.  it is not covered by default handlers
+  2.  it is not customized, 
+  3.  and it doesn't have default constructor
+  
+then the util will set it to null 
 
 If any exceptions occur during those process, the value will be set to null
-
 
 It can detect nested class:
 ```
