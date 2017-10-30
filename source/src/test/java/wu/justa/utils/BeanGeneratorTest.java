@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
@@ -190,8 +191,27 @@ public class BeanGeneratorTest {
     	    }
     	}
 
-		
-
 	}
+	
+	@Test
+	public void testEnumArray() throws Exception {
+		
+    	Method[] allMethods = ManyDataType.class.getDeclaredMethods();
+    	for (Method method : allMethods) {
+    	    if (method.getName().equals("getTypeList")) {
+    	    	Class<?> clazz = method.getReturnType();
+    	    	Type type = method.getGenericReturnType();
+    	    	
+    			BeanGenerator generator = new BeanGenerator();
+    			@SuppressWarnings("unchecked")
+				List<TypeEnum> result = (List<TypeEnum>)generator.generate(clazz, type);
+    			System.out.println(result);
+    			assertEquals(result.get(0), TypeEnum.Admin);
+    	        
+    	    }
+    	}
+		
+	}
+
 
 }

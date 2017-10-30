@@ -21,6 +21,8 @@ public class ManyDataType {
 	private List<Address> addressList;
 	private TypeEnum oneEnum;
 	
+	private List<TypeEnum> typeList;
+	
 	
 	public String getOneString() {
 		return oneString;
@@ -93,6 +95,12 @@ public class ManyDataType {
 	}
 	public void setOneEnum(TypeEnum oneEnum) {
 		this.oneEnum = oneEnum;
+	}
+	public List<TypeEnum> getTypeList() {
+		return typeList;
+	}
+	public void setTypeList(List<TypeEnum> typeList) {
+		this.typeList = typeList;
 	}
 
 }
