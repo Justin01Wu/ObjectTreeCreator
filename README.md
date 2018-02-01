@@ -1,7 +1,7 @@
 # ObjectTreeCreator
 
 ## What is it?
-This util automatically walk through the class tree on Java reflection and create an object tree with defaul values
+This util automatically walk through the class tree on Java reflection and create an object tree with default values
 
 ## What does it do?
 Because Java has so many types of class, this code only covers most common Java class, like 
@@ -12,7 +12,7 @@ Because Java has so many types of class, this code only covers most common Java 
 5. enum (will use first item)
 6. and so on
 
-The process will walk throught the class tree: call default constructor and run all setter on it.
+The process will walk through the class tree: call default constructor and run all setter on it.
 
 If an exception happen, the related properties will be set to null, you can customize it to avoid those exceptions.
 
