@@ -385,45 +385,55 @@ public class BeanGenerator {
 		
 		if(clazz.getName().equals("java.util.List")){
 			
-			ParameterizedType pType = (ParameterizedType) types[0];
-			Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];  // get first generic type
-			//System.out.println(pClazz); //prints out java.lang.Integer
-			Object one = generate(pClazz);
 			
 			java.util.List<Object> list = new ArrayList<>();
 			T t =(T)list;
-			list.add(one);
+			if(types[0] instanceof ParameterizedType){
+				ParameterizedType pType = (ParameterizedType) types[0];
+				Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];  // get first generic type
+				//System.out.println(pClazz); //prints out java.lang.Integer
+				Object one = generate(pClazz);
+				list.add(one);				
+			}
+
 			return t;
 		}
 		
 		if(clazz.getName().equals("java.util.Set")){
-			ParameterizedType pType = (ParameterizedType) types[0];
-			Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];  // get first generic type
-			//System.out.println(pClazz); //prints out java.lang.Integer
-			Object one = generate(pClazz);
 			
 			java.util.Set<Object> set = new HashSet<>();
 			T t =(T)set;
-			set.add(one);
+			if(types[0] instanceof ParameterizedType){
+				ParameterizedType pType = (ParameterizedType) types[0];
+				Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];  // get first generic type
+				//System.out.println(pClazz); //prints out java.lang.Integer
+				Object one = generate(pClazz);
+
+				set.add(one);
+			}
 			return t;
 			
 		}
 		
 		if(clazz.getName().equals("java.util.Map")){
-			
-			ParameterizedType pType = (ParameterizedType) types[0];
-			
-			Class<?> keyClazz = (Class<?>) pType.getActualTypeArguments()[0];   // get first generic type
-			//System.out.println(keyClazz); //prints out java.lang.Integer
-			Object key = generate(keyClazz);
-			
-			Class<?> valueClazz = (Class<?>) pType.getActualTypeArguments()[1];  // get second generic type
-			//System.out.println(valueClazz); //prints out java.lang.Integer
-			Object value = generate(valueClazz);
-			
+
 			java.util.Map<Object,Object> map = new HashMap<>();
 			T t =(T)map;
-			map.put(key,value);
+
+			if(types[0] instanceof ParameterizedType){
+				ParameterizedType pType = (ParameterizedType) types[0];
+				
+				Class<?> keyClazz = (Class<?>) pType.getActualTypeArguments()[0];   // get first generic type
+				//System.out.println(keyClazz); //prints out java.lang.Integer
+				Object key = generate(keyClazz);
+				
+				Class<?> valueClazz = (Class<?>) pType.getActualTypeArguments()[1];  // get second generic type
+				//System.out.println(valueClazz); //prints out java.lang.Integer
+				Object value = generate(valueClazz);
+				map.put(key,value);				
+			}
+			
+
 			return t;
 			
 		}

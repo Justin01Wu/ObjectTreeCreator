@@ -18,6 +18,7 @@ import wu.justa.utils.bean.BeanWithMap;
 import wu.justa.utils.bean.CustomizedBean;
 import wu.justa.utils.bean.ManyDataType;
 import wu.justa.utils.bean.NestedBean;
+import wu.justa.utils.bean.NoGenericBean;
 import wu.justa.utils.bean.TypeEnum;
 import wu.justa.utils.bean.User;
 import wu.justa.utils.test.CustomizedBeanCreator;
@@ -212,6 +213,17 @@ public class BeanGeneratorTest {
     	}
 		
 	}
+
+	@Test
+	public void testNoGenericBean() throws Exception {		
+		
+		BeanGenerator generator = new BeanGenerator();
+		NoGenericBean result = generator.generate(NoGenericBean.class);
+		System.out.println(result);
+
+	}
+
+	
 
 
 }
