@@ -229,7 +229,8 @@ public class BeanGeneratorTest {
 		
 		BeanGenerator generator = new BeanGenerator();
 		WrongSetterBean result = generator.generate(WrongSetterBean.class);
-		System.out.println(result);
+		assertNull(result.getMyBean());
+		assertNull(result.getMyInt());
 
 	}
 
