@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -162,6 +164,9 @@ This Jar won't depend on any Third party library except JDK 7 and above.
  *
  */
 public class BeanGenerator {
+	
+	private static Logger LOG = Logger.getLogger(BeanGenerator.class.getName());
+	
 	private static Date NOW = new Date();
 	
 	private Map<Class<?>, BeanCreator<?>> reigsteredClass = new HashMap<>();
@@ -174,6 +179,10 @@ public class BeanGenerator {
 		this(false);
 	}
 	
+	/**
+	 * we don't need verbose in the future
+	 */
+	@Deprecated
 	public BeanGenerator(boolean verbose){
 		this.verbose = verbose;
 		
@@ -232,17 +241,12 @@ public class BeanGenerator {
 			classStack.pop();
 			return container;
 		}
-		if(verbose){
-			System.out.println(" create object on class " + clazz.getName());	
-		}
+		LOG.fine(" create object on class " + clazz.getName());	
 		
 		try{
 			container = clazz.newInstance();
 		}catch(Exception e){
-			System.err.println(e.getMessage() + " on class " + clazz.getName());
-			if(verbose){
-				e.printStackTrace();	
-			}			
+			LOG.log( Level.SEVERE, e.getMessage(), e );
 			classStack.pop();
 			return null;
 		}
@@ -289,11 +293,7 @@ public class BeanGenerator {
 		try{
 			method.invoke(container, argOne);
 		}catch( Exception e){
-			System.err.println(e.getMessage() + " on method " + method.getName());
-			if(verbose){
-				e.printStackTrace();	
-			}			
-
+			LOG.log( Level.SEVERE, e.getMessage() + " on method " + method.getName(), e );
 		}
 		
 	}
@@ -391,7 +391,7 @@ public class BeanGenerator {
 			if(types[0] instanceof ParameterizedType){
 				ParameterizedType pType = (ParameterizedType) types[0];
 				Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];  // get first generic type
-				//System.out.println(pClazz); //prints out java.lang.Integer
+				LOG.fine( pClazz.getName() ); //prints out java.lang.Integer
 				Object one = generate(pClazz);
 				list.add(one);				
 			}
@@ -406,7 +406,7 @@ public class BeanGenerator {
 			if(types[0] instanceof ParameterizedType){
 				ParameterizedType pType = (ParameterizedType) types[0];
 				Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];  // get first generic type
-				//System.out.println(pClazz); //prints out java.lang.Integer
+				LOG.fine( pClazz.getName() ); //prints out java.lang.Integer
 				Object one = generate(pClazz);
 
 				set.add(one);
@@ -424,11 +424,11 @@ public class BeanGenerator {
 				ParameterizedType pType = (ParameterizedType) types[0];
 				
 				Class<?> keyClazz = (Class<?>) pType.getActualTypeArguments()[0];   // get first generic type
-				//System.out.println(keyClazz); //prints out java.lang.Integer
+				LOG.fine( keyClazz.getName() ); //prints out java.lang.Integer
 				Object key = generate(keyClazz);
 				
 				Class<?> valueClazz = (Class<?>) pType.getActualTypeArguments()[1];  // get second generic type
-				//System.out.println(valueClazz); //prints out java.lang.Integer
+				LOG.fine( valueClazz.getName() ); //prints out java.lang.Integer
 				Object value = generate(valueClazz);
 				map.put(key,value);				
 			}

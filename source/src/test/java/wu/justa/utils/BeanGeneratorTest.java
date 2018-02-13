@@ -21,6 +21,7 @@ import wu.justa.utils.bean.NestedBean;
 import wu.justa.utils.bean.NoGenericBean;
 import wu.justa.utils.bean.TypeEnum;
 import wu.justa.utils.bean.User;
+import wu.justa.utils.bean.WrongSetterBean;
 import wu.justa.utils.test.CustomizedBeanCreator;
 import wu.justa.utils.test.CustomizedStringCreator;
 
@@ -222,6 +223,17 @@ public class BeanGeneratorTest {
 		System.out.println(result);
 
 	}
+
+	@Test
+	public void testWrongSetterBean() throws Exception {		
+		
+		BeanGenerator generator = new BeanGenerator();
+		WrongSetterBean result = generator.generate(WrongSetterBean.class);
+		System.out.println(result);
+
+	}
+
+	
 
 	
 
