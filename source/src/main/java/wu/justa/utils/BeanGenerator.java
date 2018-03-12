@@ -172,19 +172,8 @@ public class BeanGenerator {
 	private Map<Class<?>, BeanCreator<?>> reigsteredClass = new HashMap<>();
 	
 	private Stack<Class<?>> classStack = new Stack<>();
-	
-	private boolean verbose = false;
-	
+
 	public BeanGenerator(){
-		this(false);
-	}
-	
-	/**
-	 * we don't need verbose in the future
-	 */
-	@Deprecated
-	public BeanGenerator(boolean verbose){
-		this.verbose = verbose;
 		
 		reigsteredClass.put(java.util.List.class, null);
 		reigsteredClass.put(java.util.Set.class, null);
