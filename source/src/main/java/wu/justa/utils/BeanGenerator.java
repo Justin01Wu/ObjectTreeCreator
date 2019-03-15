@@ -171,8 +171,8 @@ public class BeanGenerator {
 	
 	private Map<Class<?>, BeanCreator<?>> reigsteredClass = new HashMap<>();
 	
-	private Stack<Class<?>> classStack = new Stack<>();
-
+	private Stack<Class<?>> classStack = new Stack<>();	
+	
 	public BeanGenerator(){
 		
 		reigsteredClass.put(java.util.List.class, null);
@@ -180,15 +180,25 @@ public class BeanGenerator {
 		reigsteredClass.put(java.util.Map.class, null);
 		
 		reigsteredClass.put(java.lang.Boolean.class, null);
+		reigsteredClass.put(boolean.class, null);		
 		
 		reigsteredClass.put(java.lang.Integer.class, null);
-		reigsteredClass.put(java.lang.Short.class, null);		
+		reigsteredClass.put(int.class, null);
+		
+		reigsteredClass.put(java.lang.Short.class, null);
+		reigsteredClass.put(short.class, null);
+		
 		reigsteredClass.put(java.lang.Long.class, null);
+		reigsteredClass.put(long.class, null);
 		
 		reigsteredClass.put(java.lang.Double.class, null);
+		reigsteredClass.put(double.class, null);
+		
 		reigsteredClass.put(java.lang.Float.class, null);
+		reigsteredClass.put(float.class, null);
 		
 		reigsteredClass.put(java.lang.Byte.class, null);
+		reigsteredClass.put(byte.class, null);
 		
 		reigsteredClass.put(java.lang.Character.class, null);
 		reigsteredClass.put(java.lang.String.class, null);
@@ -214,7 +224,9 @@ public class BeanGenerator {
 		classStack.push(clazz);  // add myself to let children detect nested bean infinite loop 
 		
 		T container;
+		
 		boolean knownClass = false;
+
 		if(clazz.isArray()){
 			//array
 			knownClass = true;

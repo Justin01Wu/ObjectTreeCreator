@@ -33,6 +33,20 @@ public class BeanGeneratorTest {
 		Integer result = generator.generate(Integer.class);
 		assertEquals(result, new Integer(12345));
 	}
+	
+	@Test
+	public void testIntCreator() throws Exception {
+		BeanGenerator generator = new BeanGenerator();		
+		Integer result = generator.generate(int.class);
+		assertEquals(result, new Integer(12345));
+	}
+	
+	@Test
+	public void testBooleanCreator() throws Exception {
+		BeanGenerator generator = new BeanGenerator();		
+		Boolean result = generator.generate(boolean.class);
+		assertTrue(result);
+	}
 
 
 	@Test
@@ -214,7 +228,7 @@ public class BeanGeneratorTest {
     	}
 		
 	}
-
+	
 	@Test
 	public void testNoGenericBean() throws Exception {		
 		
@@ -233,10 +247,5 @@ public class BeanGeneratorTest {
 		assertNull(result.getMyInt());
 
 	}
-
-	
-
-	
-
 
 }
