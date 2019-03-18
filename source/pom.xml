@@ -4,12 +4,13 @@
 	<groupId>wu.justa</groupId>
 	<artifactId>object-tree-creator</artifactId>
 	<packaging>jar</packaging>
-	<version>1.3</version>
+	<version>1.4</version>
 	<name>Object Tree creator</name>
 	<url>https://github.com/Justin01Wu/ObjectTreeCreator/tree/master</url>
 	<description>
 	release notes:  
 		1.3 fix some primitives issues
+		1.4 support java.util.Collection
 	</description>
 	
 	<properties>

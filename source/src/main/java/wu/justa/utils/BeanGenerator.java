@@ -175,6 +175,7 @@ public class BeanGenerator {
 	
 	public BeanGenerator(){
 		
+		reigsteredClass.put(java.util.Collection.class, null);
 		reigsteredClass.put(java.util.List.class, null);
 		reigsteredClass.put(java.util.Set.class, null);
 		reigsteredClass.put(java.util.Map.class, null);
@@ -399,6 +400,21 @@ public class BeanGenerator {
 
 			return t;
 		}
+		
+		if(clazz.getName().equals("java.util.Collection")){
+			
+			java.util.List<Object> list = new ArrayList<>();
+			T t =(T)list;
+			if(types[0] instanceof ParameterizedType){
+				ParameterizedType pType = (ParameterizedType) types[0];
+				Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];  // get first generic type
+				LOG.fine( pClazz.getName() ); //prints out java.lang.Integer
+				Object one = generate(pClazz);
+				list.add(one);				
+			}
+
+			return t;
+		}		
 		
 		if(clazz.getName().equals("java.util.Set")){
 			

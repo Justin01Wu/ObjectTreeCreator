@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import wu.justa.utils.bean.BeanExtended;
 import wu.justa.utils.bean.BeanWithArray;
+import wu.justa.utils.bean.BeanWithCollection;
 import wu.justa.utils.bean.BeanWithMap;
 import wu.justa.utils.bean.CustomizedBean;
 import wu.justa.utils.bean.ManyDataType;
@@ -137,8 +138,18 @@ public class BeanGeneratorTest {
 		assertEquals(result.getStringArray()[0],"a string");
 		assertEquals(result.getIntegerArray()[0], new Integer(12345));
 		assertEquals(result.getIntArray()[0], 12345);
-		assertEquals(result.getUsers()[0].getId(), new Integer(12345));
-		
+		assertEquals(result.getUsers()[0].getId(), new Integer(12345));		
+
+	}
+	
+	@Test
+	public void testBeanWithCollection() throws Exception {
+		BeanGenerator generator = new BeanGenerator();
+		BeanWithCollection result = generator.generate(BeanWithCollection.class);
+		System.out.println(result);
+		assertNotNull(result);  
+		assertTrue(result.getUsers().size() ==1);
+		assertEquals(result.getUsers().iterator().next().getId(), new Integer(12345));		
 
 	}
 	
