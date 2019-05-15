@@ -176,7 +176,7 @@ public class BeanGenerator {
 	public BeanGenerator(){
 		
 		reigsteredClass.put(java.util.Collection.class, null);
-		reigsteredClass.put(java.util.List.class, null);
+		reigsteredClass.put(java.util.List.class, null);		
 		reigsteredClass.put(java.util.Set.class, null);
 		reigsteredClass.put(java.util.Map.class, null);
 		
@@ -239,7 +239,7 @@ public class BeanGenerator {
 			knownClass = true;
 		}
 		if(knownClass){
-			container = handleBasicClass(clazz, types);
+			container = handleBasicClass(clazz, types, null);
 			classStack.pop();
 			return container;
 		}
@@ -270,7 +270,7 @@ public class BeanGenerator {
     			if(method.getParameters().length  != 1){
     				continue;
     			}
-    	        handleOneMethod(method, container);
+    	        handleOneMethod(method, container, type);
     	    }
     	}
     	classStack.pop();  // remove myself to other class can handle the same class 
@@ -282,13 +282,13 @@ public class BeanGenerator {
 		return generate(clazz, null);
 	}
 	
-	private void  handleOneMethod(Method method, Object container) throws Exception{
+	private void  handleOneMethod(Method method, Object container, Type containerGeneric) throws Exception{
 
 		
 		Parameter parameter = method.getParameters()[0];
 		
 		Type[] types = method.getGenericParameterTypes();
-		Object argOne = handleOneParameter(parameter, types);
+		Object argOne = handleOneParameter(parameter, types, containerGeneric);
 		if(argOne == null){
 			return;
 		}
@@ -300,13 +300,39 @@ public class BeanGenerator {
 		
 	}
 	
-	private Object handleOneParameter(Parameter parameter, Type[] types) throws Exception{
+	private Object handleOneParameter(Parameter parameter, Type[] types, Type containerGeneric ) throws Exception{
 		Class<?> clazz  = parameter.getType();
-		return handleBasicClass(clazz, types);
+		return handleBasicClass(clazz, types, containerGeneric);
+	}
+	
+	private void handleCollection(java.util.Collection<Object> collection, Type[] types,Type containerGeneric) throws Exception {
+
+		
+		if(types[0] instanceof ParameterizedType){
+			ParameterizedType pType = (ParameterizedType) types[0];
+			Type myType = pType.getActualTypeArguments()[0];     // get first generic type
+			
+			Class<?> pClazz = null;
+			if(myType instanceof Class<?>) {
+				pClazz = (Class<?>) myType;					
+			}else {
+				if(containerGeneric instanceof ParameterizedType ) {
+					pClazz = (Class<?>)((ParameterizedType)containerGeneric).getActualTypeArguments()[0];							
+				}	else {
+					System.out.println("unexpected result");
+				}
+			}				  
+			if(pClazz != null) {
+				Object one = generate(pClazz);
+				collection.add(one);
+			}
+		}else {
+			LOG.fine( "can't handle non ParameterizedType for Collection" ); 
+		}		
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T> T handleBasicClass(Class<T> clazz, Type[] types) throws Exception{		
+	private <T> T handleBasicClass(Class<T> clazz, Type[] types, Type containerGeneric) throws Exception{		
 		
 		BeanCreator<?> customizedCreator = reigsteredClass.get(clazz);
 		if(customizedCreator != null){
@@ -385,51 +411,19 @@ public class BeanGenerator {
 			return (T)myBoolean;
 		}		
 		
-		if(clazz.getName().equals("java.util.List")){
-			
-			
+		if(clazz.getName().equals("java.util.List") || clazz.getName().equals("java.util.Collection")){			
 			java.util.List<Object> list = new ArrayList<>();
 			T t =(T)list;
-			if(types[0] instanceof ParameterizedType){
-				ParameterizedType pType = (ParameterizedType) types[0];
-				Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];  // get first generic type
-				LOG.fine( pClazz.getName() ); //prints out java.lang.Integer
-				Object one = generate(pClazz);
-				list.add(one);				
-			}
-
+			handleCollection( list, types, containerGeneric );
 			return t;
 		}
-		
-		if(clazz.getName().equals("java.util.Collection")){
-			
-			java.util.List<Object> list = new ArrayList<>();
-			T t =(T)list;
-			if(types[0] instanceof ParameterizedType){
-				ParameterizedType pType = (ParameterizedType) types[0];
-				Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];  // get first generic type
-				LOG.fine( pClazz.getName() ); //prints out java.lang.Integer
-				Object one = generate(pClazz);
-				list.add(one);				
-			}
-
-			return t;
-		}		
 		
 		if(clazz.getName().equals("java.util.Set")){
 			
 			java.util.Set<Object> set = new HashSet<>();
 			T t =(T)set;
-			if(types[0] instanceof ParameterizedType){
-				ParameterizedType pType = (ParameterizedType) types[0];
-				Class<?> pClazz = (Class<?>) pType.getActualTypeArguments()[0];  // get first generic type
-				LOG.fine( pClazz.getName() ); //prints out java.lang.Integer
-				Object one = generate(pClazz);
-
-				set.add(one);
-			}
-			return t;
-			
+			handleCollection( set, types, containerGeneric );
+			return t;			
 		}
 		
 		if(clazz.getName().equals("java.util.Map")){
@@ -445,9 +439,11 @@ public class BeanGenerator {
 				Object key = generate(keyClazz);
 				
 				Class<?> valueClazz = (Class<?>) pType.getActualTypeArguments()[1];  // get second generic type
-				LOG.fine( valueClazz.getName() ); //prints out java.lang.Integer
+				
 				Object value = generate(valueClazz);
 				map.put(key,value);				
+			}else {
+				LOG.fine( "can't handle non ParameterizedType for Map" );
 			}
 			
 
@@ -462,7 +458,7 @@ public class BeanGenerator {
 			
 			Object one = null;;
 			if(componentType.isPrimitive()){
-				one = handleBasicClass(componentType, null);
+				one = handleBasicClass(componentType, null, null);
 			}else{
 				one = generate(componentType);	
 			}
@@ -484,9 +480,17 @@ public class BeanGenerator {
 			
 		}
 		
-		return generate(clazz);
+		if(types != null && types.length>0) {
+			return generate(clazz, types[0]); 
+			// TODO handle multiple generic types
+		}else {
+			return generate(clazz);	
+		}
+		
 
 
 	}
+	
+
 	
 }

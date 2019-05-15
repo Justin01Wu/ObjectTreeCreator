@@ -14,8 +14,10 @@ import org.junit.Test;
 
 import wu.justa.utils.bean.BeanExtended;
 import wu.justa.utils.bean.BeanWithArray;
+import wu.justa.utils.bean.BeanWithClassGeneric;
 import wu.justa.utils.bean.BeanWithCollection;
 import wu.justa.utils.bean.BeanWithMap;
+import wu.justa.utils.bean.BeanWithWildSet;
 import wu.justa.utils.bean.CustomizedBean;
 import wu.justa.utils.bean.ManyDataType;
 import wu.justa.utils.bean.NestedBean;
@@ -138,7 +140,8 @@ public class BeanGeneratorTest {
 		assertEquals(result.getStringArray()[0],"a string");
 		assertEquals(result.getIntegerArray()[0], new Integer(12345));
 		assertEquals(result.getIntArray()[0], 12345);
-		assertEquals(result.getUsers()[0].getId(), new Integer(12345));		
+		assertEquals(result.getUsers()[0].getId(), new Integer(12345));
+		
 
 	}
 	
@@ -149,9 +152,41 @@ public class BeanGeneratorTest {
 		System.out.println(result);
 		assertNotNull(result);  
 		assertTrue(result.getUsers().size() ==1);
-		assertEquals(result.getUsers().iterator().next().getId(), new Integer(12345));		
-
+		assertEquals(result.getUsers().iterator().next().getId(), new Integer(12345));
+		
+		assertTrue(result.getUserIds().size() ==1);
+		assertEquals(result.getUserIds().get(0), new Integer(12345));
+		
 	}
+	
+	@Test
+	public void testBeanWithClassGeneric() throws Exception {
+		BeanGenerator generator = new BeanGenerator();
+		BeanWithClassGeneric result = generator.generate(BeanWithClassGeneric.class);
+		System.out.println(result);
+		assertNotNull(result);  
+		
+		assertEquals(result.getIds().getItems().get(0), new Integer(12345));
+	}
+
+	
+	@Test
+	public void testBeanWithWildSet() throws Exception {
+		
+		BeanGenerator generator = new BeanGenerator();
+		BeanWithWildSet result = generator.generate(BeanWithWildSet.class);
+		System.out.println(result);
+		assertNotNull(result);  
+		
+		assertEquals(result.getMySet().size(), 0);
+		assertEquals(result.getMySet2().size(), 0);
+		// we can't guess wild set , so don't set it
+		// Like Set<?> , Set<*>  or Set  
+		
+	}
+	
+	
+	
 	
 	@Test
 	public void testBeanExtended() throws Exception {
@@ -191,9 +226,6 @@ public class BeanGeneratorTest {
     	        
     	    }
     	}
-
-		
-
 	}
 
 
