@@ -2,18 +2,30 @@ package wu.justa.utils;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
 public class MyInterceptor implements MethodInterceptor {
+	
+	private static Logger LOG = Logger.getLogger(MyInterceptor.class.getName());
+	
+	static Date fixedDate = new Date();
  
 	static Set<Class<?>> ret = new HashSet<Class<?>>();
 	static Set<Class<?>> knownClass = new HashSet<Class<?>>();
 	{
+		fixedDate.setTime(29405834957345l);
 		ret.add(Boolean.class);
 		ret.add(Character.class);
 		ret.add(Byte.class);
@@ -33,9 +45,12 @@ public class MyInterceptor implements MethodInterceptor {
 		ret.add(float.class);
 		ret.add(double.class);	
 		
+		
+		
 		knownClass.addAll(ret);
 		knownClass.add(String.class);
 		knownClass.add(Calendar.class);
+		knownClass.add(List.class);
 	}
 	
 	
@@ -91,7 +106,7 @@ public class MyInterceptor implements MethodInterceptor {
     	}
     	if( returnClazz == Calendar.class) {
 			Calendar cal = Calendar.getInstance();
-			cal.setTimeInMillis(29405834957345l);
+			cal.setTime(fixedDate);
 			return cal;
     	}
     	
@@ -138,11 +153,44 @@ public class MyInterceptor implements MethodInterceptor {
 		}
 
 		if (returnClazz == boolean.class || returnClazz == Boolean.class) {
-			Boolean myBoolean = true;
-			;
+			Boolean myBoolean = true;			
 			return (T) myBoolean;
 		}
+		
+		if(returnClazz == List.class || returnClazz == Collection.class){			
+			java.util.List<Object> list = new ArrayList<>();
+			T t =(T)list;
+			
+			//handleCollection( list, types, null );
+			//return t;
+		}
 		throw new RuntimeException("unexpected type" + returnClazz);
+	}
+	
+	private static void handleCollection(java.util.Collection<Object> collection, Type[] types,Type containerGeneric) throws Exception {
+
+		
+		if(types[0] instanceof ParameterizedType){
+			ParameterizedType pType = (ParameterizedType) types[0];
+			Type myType = pType.getActualTypeArguments()[0];     // get first generic type
+			
+			Class<?> pClazz = null;
+			if(myType instanceof Class<?>) {
+				pClazz = (Class<?>) myType;					
+			}else {
+				if(containerGeneric instanceof ParameterizedType ) {
+					pClazz = (Class<?>)((ParameterizedType)containerGeneric).getActualTypeArguments()[0];							
+				}	else {
+					System.out.println("unexpected result");
+				}
+			}				  
+			if(pClazz != null) {
+				Object one = new BeanGenerator2().generate(pClazz);
+				collection.add(one);
+			}
+		}else {
+			LOG.fine( "can't handle non ParameterizedType for Collection" ); 
+		}		
 	}
 
 

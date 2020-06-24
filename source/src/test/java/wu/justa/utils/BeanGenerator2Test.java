@@ -36,7 +36,7 @@ public class BeanGenerator2Test {
 		//assertEquals(result.getUsers()[0].getId(), new Integer(12345));
 		
 		assertEquals(result.getMyLong(), Long.valueOf(123456789012l));
-		assertTrue(result.getMyShort() == 123);
+		assertEquals(result.getMyShort(), 123);
 		assertTrue(result.getMyByte() == 1);
 		assertTrue(result.getMyFloat() == 12345.6789f);
 		assertTrue(result.getMyCalendar().getTimeInMillis() == 29405834957345l);
