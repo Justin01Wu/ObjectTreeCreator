@@ -30,8 +30,8 @@ public class BeanGenerator2Test {
 		assertNotNull(result);  
 		assertEquals(result.getId(), Integer.valueOf(12345));
 		//assertEquals(result.getStringArray()[0],"a string");
-		//assertEquals(result.getIntegerArray()[0], new Integer(12345));
-		//assertEquals(result.getIntArray()[0], 12345);		
+		assertEquals(result.getIntegerArray()[0], Integer.valueOf(12345));
+		assertEquals(result.getIntArray()[0], 12345);		
 		//assertEquals(result.getUsers()[0].getId(), new Integer(12345));
 		
 		assertEquals(result.getMyLong(), Long.valueOf(123456789012l));
