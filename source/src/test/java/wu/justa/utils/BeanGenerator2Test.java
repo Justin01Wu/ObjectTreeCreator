@@ -17,7 +17,7 @@ public class BeanGenerator2Test {
 	public void testBooleanCreator() throws Exception {
 		BeanGenerator2 generator = new BeanGenerator2();		
 		Address result = generator.generate(Address.class);
-		assertEquals(result.getCountry(), "a String");
+		assertEquals(result.getCountry(), "a string");
 		assertEquals(result.getId(), 12345);
 		
 	}
@@ -29,7 +29,7 @@ public class BeanGenerator2Test {
 		System.out.println(result);
 		assertNotNull(result);  
 		assertEquals(result.getId(), Integer.valueOf(12345));
-		//assertEquals(result.getStringArray()[0],"a string");
+		assertEquals(result.getStringArray()[0],"a string");
 		assertEquals(result.getIntegerArray()[0], Integer.valueOf(12345));
 		assertEquals(result.getIntArray()[0], 12345);		
 		//assertEquals(result.getUsers()[0].getId(), new Integer(12345));

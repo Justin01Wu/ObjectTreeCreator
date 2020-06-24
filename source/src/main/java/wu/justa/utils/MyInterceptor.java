@@ -11,6 +11,7 @@ import net.sf.cglib.proxy.MethodProxy;
 public class MyInterceptor implements MethodInterceptor {
  
 	static Set<Class<?>> ret = new HashSet<Class<?>>();
+	static Set<Class<?>> knownClass = new HashSet<Class<?>>();
 	{
 		ret.add(Boolean.class);
 		ret.add(Character.class);
@@ -21,19 +22,29 @@ public class MyInterceptor implements MethodInterceptor {
 		ret.add(Float.class);
 		ret.add(Double.class);
 		ret.add(Void.class);
+		
+		ret.add(boolean.class);
+		ret.add(char.class);
+		ret.add(byte.class);
+		ret.add(short.class);
+		ret.add(int.class);
+		ret.add(long.class);
+		ret.add(float.class);
+		ret.add(double.class);	
+		
+		knownClass.addAll(ret);
+		knownClass.add(String.class);
 	}
+	
 	
 	@Override
 	public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
 	    if (method.getDeclaringClass() != Object.class ) {		    	
 	    	
 	    	Class<?> returnClazz = method.getReturnType();
-	    	if( returnClazz == String.class) {
-	    		return "a String";
-	    	}
 	    	
-	    	if(returnClazz.isPrimitive() || isWrapperType(returnClazz)) {
-	    		return handleBasicClass(returnClazz);
+	    	if(isKnownTypeType(returnClazz)) {
+	    		return handleKnowClass(returnClazz);
 	    	}
 	    	
 			if(returnClazz.isArray()){
@@ -42,10 +53,10 @@ public class MyInterceptor implements MethodInterceptor {
 				Object aObject = Array.newInstance(componentType, 1); //1 is length	        
 				
 				Object one = null;;
-				if(componentType.isPrimitive() || isWrapperType(componentType)){
-					one = handleBasicClass(componentType);
-				}else{
-					one = new BeanGenerator2().generate(componentType);	
+				if(isKnownTypeType(componentType)){
+					one = handleKnowClass(componentType);
+				}else {
+					one = new BeanGenerator2().generate(componentType);
 				}
 				
 		        Array.set(aObject, 0, one); // set your value here in first cell
@@ -62,6 +73,21 @@ public class MyInterceptor implements MethodInterceptor {
 	public static boolean isWrapperType(Class<?> clazz)  {
         return ret.contains(clazz);
     }
+	
+	public static boolean isKnownTypeType(Class<?> clazz)  {
+        return knownClass.contains(clazz);
+    }
+	
+	private static Object handleKnowClass(Class<?> returnClazz) {
+    	if( returnClazz == String.class) {
+    		return "a string";
+    	}
+    	
+    	if(returnClazz.isPrimitive() || isWrapperType(returnClazz)) {
+    		return handleBasicClass(returnClazz);
+    	}
+    	throw new RuntimeException("unexpected type" + returnClazz);
+	}
 
 	private static <T> T handleBasicClass(Class<T> returnClazz) {
 		if (returnClazz == int.class || returnClazz == Integer.class) {
