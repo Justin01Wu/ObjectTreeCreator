@@ -2,6 +2,7 @@ package wu.justa.utils;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +35,7 @@ public class MyInterceptor implements MethodInterceptor {
 		
 		knownClass.addAll(ret);
 		knownClass.add(String.class);
+		knownClass.add(Calendar.class);
 	}
 	
 	
@@ -45,6 +47,11 @@ public class MyInterceptor implements MethodInterceptor {
 	    	
 	    	if(isKnownTypeType(returnClazz)) {
 	    		return handleKnowClass(returnClazz);
+	    	}
+	    	
+	    	if(Enum.class.isAssignableFrom(returnClazz)){
+	    		// enum
+	    		return returnClazz.getEnumConstants()[0];
 	    	}
 	    	
 			if(returnClazz.isArray()){
@@ -81,6 +88,11 @@ public class MyInterceptor implements MethodInterceptor {
 	private static Object handleKnowClass(Class<?> returnClazz) {
     	if( returnClazz == String.class) {
     		return "a string";
+    	}
+    	if( returnClazz == Calendar.class) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeInMillis(29405834957345l);
+			return cal;
     	}
     	
     	if(returnClazz.isPrimitive() || isWrapperType(returnClazz)) {
