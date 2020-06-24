@@ -4,7 +4,7 @@
 	<groupId>wu.justa</groupId>
 	<artifactId>object-tree-creator</artifactId>
 	<packaging>jar</packaging>
-	<version>1.5</version>
+	<version>1.6</version>
 	<name>Object Tree creator</name>
 	<url>https://github.com/Justin01Wu/ObjectTreeCreator/tree/master</url>
 	<description>
@@ -12,11 +12,13 @@
 		1.3 fix some primitives issues
 		1.4 support java.util.Collection
 		1.5 support Class Generic
+		1.6 using cglib to do proxy
 	</description>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>	
 	</properties>
 
 	<dependencies>
@@ -27,22 +29,18 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+    		<groupId>cglib</groupId>
+    		<artifactId>cglib</artifactId>
+    		<version>3.2.4</version>
+		</dependency>		
 
 	</dependencies>
 
 	<build>
 		<finalName>ObjectTreeCreator</finalName>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<debug>true</debug>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
