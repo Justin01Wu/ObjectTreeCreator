@@ -47,10 +47,10 @@ public class BeanGenerator2Test {
 	@Test
 	public void testManyDataType() throws Exception {
 		ManyDataType result = new BeanGenerator2().generate(ManyDataType.class);
-		System.out.println(result);
-		assertEquals(result.getOneEnum(), TypeEnum.Admin);
-		assertEquals(result.getOneBoolean2(), Boolean.TRUE);
-//		assertTrue(result.getStringList().size() ==1);
+//		System.out.println(result);
+//		assertEquals(result.getOneEnum(), TypeEnum.Admin);
+//		assertEquals(result.getOneBoolean2(), Boolean.TRUE);
+		assertTrue(result.getStringList().size() ==1);
 //		assertEquals(result.getStringList().get(0), "a string");
 		
 //		assertTrue(result.getIntegerSet().size() ==1);

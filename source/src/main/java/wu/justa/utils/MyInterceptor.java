@@ -61,7 +61,7 @@ public class MyInterceptor implements MethodInterceptor {
 	    	Class<?> returnClazz = method.getReturnType();
 	    	
 	    	if(isKnownTypeType(returnClazz)) {
-	    		return handleKnowClass(returnClazz);
+	    		return handleKnowClass(returnClazz, method);
 	    	}
 	    	
 	    	if(Enum.class.isAssignableFrom(returnClazz)){
@@ -76,7 +76,7 @@ public class MyInterceptor implements MethodInterceptor {
 				
 				Object one = null;;
 				if(isKnownTypeType(componentType)){
-					one = handleKnowClass(componentType);
+					one = handleKnowClass(componentType, method);
 				}else {
 					one = new BeanGenerator2().generate(componentType);
 				}
@@ -100,7 +100,7 @@ public class MyInterceptor implements MethodInterceptor {
         return knownClass.contains(clazz);
     }
 	
-	private static Object handleKnowClass(Class<?> returnClazz) {
+	private static Object handleKnowClass(Class<?> returnClazz, Method method) {
     	if( returnClazz == String.class) {
     		return "a string";
     	}
@@ -113,7 +113,19 @@ public class MyInterceptor implements MethodInterceptor {
     	if(returnClazz.isPrimitive() || isWrapperType(returnClazz)) {
     		return handleBasicClass(returnClazz);
     	}
-    	throw new RuntimeException("unexpected type" + returnClazz);
+		if(returnClazz == List.class || returnClazz == Collection.class){
+			
+			Type[] types = method.getGenericParameterTypes();
+			for(Type type: types) {
+				System.out.println(type);
+			}
+			//java.util.List<Object> list = new ArrayList<>();
+			//T t =(T)list;
+			
+			//handleCollection( list, types, null );
+			//return t;
+		}
+    	throw new RuntimeException("unexpected type " + returnClazz);
 	}
 
 	private static <T> T handleBasicClass(Class<T> returnClazz) {
@@ -157,13 +169,6 @@ public class MyInterceptor implements MethodInterceptor {
 			return (T) myBoolean;
 		}
 		
-		if(returnClazz == List.class || returnClazz == Collection.class){			
-			java.util.List<Object> list = new ArrayList<>();
-			T t =(T)list;
-			
-			//handleCollection( list, types, null );
-			//return t;
-		}
 		throw new RuntimeException("unexpected type" + returnClazz);
 	}
 	
@@ -173,6 +178,8 @@ public class MyInterceptor implements MethodInterceptor {
 		if(types[0] instanceof ParameterizedType){
 			ParameterizedType pType = (ParameterizedType) types[0];
 			Type myType = pType.getActualTypeArguments()[0];     // get first generic type
+			// CGLIB can't find generic type, TODO fix it
+			// for details please see https://stackoverflow.com/questions/8474814/spring-cglib-why-cant-a-generic-class-be-proxied
 			
 			Class<?> pClazz = null;
 			if(myType instanceof Class<?>) {
@@ -191,6 +198,13 @@ public class MyInterceptor implements MethodInterceptor {
 		}else {
 			LOG.fine( "can't handle non ParameterizedType for Collection" ); 
 		}		
+	}
+	
+	public static void main(String [] args) {
+	    List<Object> fooList = new ArrayList<Object>();
+	    String fooString = "";
+	    System.out.println((ParameterizedType)fooList.getClass().getGenericSuperclass());
+	    System.out.println((ParameterizedType)fooString.getClass().getGenericSuperclass());
 	}
 
 
