@@ -2,16 +2,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>wu.justa</groupId>
-	<artifactId>object-tree-creator</artifactId>
+	<artifactId>object-tree-creator-v2</artifactId>
 	<packaging>jar</packaging>
-	<version>1.5</version>
+	<version>1.0</version>
 	<name>Object Tree creator</name>
 	<url>https://github.com/Justin01Wu/ObjectTreeCreator/tree/master</url>
 	<description>
 	release notes:  
-		1.3 fix some primitives issues
-		1.4 support java.util.Collection
-		1.5 support Class Generic
+		1.0 add byte-buddy and saples
 	</description>
 	
 	<properties>
@@ -27,6 +25,21 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- this is required for java json mapping -->
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<scope>compile</scope>
+			<version>2.33</version>
+		</dependency>
+		
+		<dependency>
+    		<groupId>net.bytebuddy</groupId>
+    		<artifactId>byte-buddy</artifactId>
+    		<version>1.12.13</version>
+		</dependency>
+
 
 	</dependencies>
 
