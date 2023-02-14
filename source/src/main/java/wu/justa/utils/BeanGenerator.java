@@ -161,8 +161,10 @@ This Jar won't depend on any Third party library except JDK 7 and above.
 </pre>
 
  * @author justin.wu
+ * @deprecated, please use GetterProxy
  *
  */
+@Deprecated
 public class BeanGenerator {
 	
 	private static Logger LOG = Logger.getLogger(BeanGenerator.class.getName());
