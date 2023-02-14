@@ -1,7 +1,9 @@
 package wu.justa.utils;
 
 public class Default {
-	public static byte b = 123;
+	
+	public static int i = 12345;
+	public static byte b = 123;	
 	public static short s = 123;
 	public static String ss = "Hello World ByteBuddy!";
 	public static long l = 1234567l;
