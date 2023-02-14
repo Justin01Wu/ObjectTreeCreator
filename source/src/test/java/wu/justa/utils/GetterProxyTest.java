@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.DynamicType.Builder;
 import net.bytebuddy.implementation.FixedValue;
 import net.bytebuddy.matcher.ElementMatchers;
 import wu.justa.utils.bean.Address;
@@ -38,14 +39,8 @@ public class GetterProxyTest {
 	// byteBuddy sample
 	@Test
 	public void testAddress() throws JsonProcessingException, InstantiationException, IllegalAccessException {
-
-		DynamicType.Unloaded unloadedType = new ByteBuddy().subclass(Address.class)
-				.method(ElementMatchers.isGetter().and(returns(String.class)))
-				.intercept(FixedValue.value("Hello World ByteBuddy!"))
-				.method(ElementMatchers.isGetter().and(returns(int.class)))
-				.intercept(FixedValue.value(12345)).make();
-
-		Class<Address> dynamicType = unloadedType.load(Address.class.getClassLoader()).getLoaded();
+		
+		Class<Address> dynamicType = GetterProxy.createProxy(Address.class);
 
 		assertEquals(dynamicType.newInstance().getAddress(), "Hello World ByteBuddy!");
 
@@ -60,31 +55,8 @@ public class GetterProxyTest {
 	
 	@Test
 	public void testBeanExtended() throws JsonProcessingException, InstantiationException, IllegalAccessException {
-		byte b = 123;
-		short s = 123;
-		float f = 123.45f;
-
-		DynamicType.Unloaded unloadedType = new ByteBuddy().subclass(BeanExtended.class)
-				.method(ElementMatchers.isGetter().and(returns(String.class)))
-				.intercept(FixedValue.value("Hello World ByteBuddy!"))
-				.method(ElementMatchers.isGetter().and(returns(Integer.class)))
-				.intercept(FixedValue.value(12345))
-				.method(ElementMatchers.isGetter().and(returns(short.class)))
-				.intercept(FixedValue.value(s))
-				.method(ElementMatchers.isGetter().and(returns(byte.class)))
-				.intercept(FixedValue.value(b))
-				.method(ElementMatchers.isGetter().and(returns(float.class)))
-				.intercept(FixedValue.value(f))				
-				.method(ElementMatchers.isGetter().and(returns(Long.class)))
-				.intercept(FixedValue.value(1234567l))
-				.method(ElementMatchers.isGetter().and(returns(Boolean.class)))
-				.intercept(FixedValue.value(true))
-				.method(ElementMatchers.isGetter().and(returns(Calendar.class)))
-				.intercept(FixedValue.value(Calendar.getInstance()))
-				
-				.make();
-
-		Class<BeanExtended> dynamicType = unloadedType.load(BeanExtended.class.getClassLoader()).getLoaded();
+		
+		Class<BeanExtended> dynamicType = GetterProxy.createProxy(BeanExtended.class);
 
 		assertEquals(dynamicType.newInstance().getId(), Integer.valueOf(12345));
 
